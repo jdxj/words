@@ -1,0 +1,10 @@
+# 可选的模式, 参考 gin
+# debug
+# release
+# test
+mode: debug
+
+# web
+port: 8081
+
+# logger
