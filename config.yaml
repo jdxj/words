@@ -8,3 +8,6 @@ mode: debug
 port: 8081
 
 # logger
+
+# database
+db_path: ./words.db
