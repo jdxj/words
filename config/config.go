@@ -8,19 +8,24 @@ import (
 const (
 	configName = "config"
 	configType = "yaml"
-	// todo: 路径更改
-	configPath = "/home/jdxj/workspace/words/config"
+
+	// 硬编码
+	configPathLocal = "."
+	configPathDebug = "/home/jdxj/workspace/words"
 )
 
 const (
-	portKey = "port"
-	modeKey = "mode"
+	portKey    = "port"
+	modeKey    = "mode"
+	dbPathKey  = "db_path"
+	logPathKey = "log_path"
 )
 
 func init() {
 	viper.SetConfigName(configName)
 	viper.SetConfigType(configType)
-	viper.AddConfigPath(configPath)
+	viper.AddConfigPath(configPathLocal)
+	viper.AddConfigPath(configPathDebug)
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -37,4 +42,14 @@ func GetPort() string {
 func GetMode() string {
 	viper.SetDefault(modeKey, gin.DebugMode)
 	return viper.GetString(modeKey)
+}
+
+func GetDBPath() string {
+	viper.SetDefault(dbPathKey, "words.db")
+	return viper.GetString(dbPathKey)
+}
+
+func GetLogPath() string {
+	viper.SetDefault(logPathKey, "words.log")
+	return viper.GetString(logPathKey)
 }

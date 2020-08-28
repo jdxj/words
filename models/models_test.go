@@ -57,3 +57,21 @@ func TestFavorite_Insert(t *testing.T) {
 		t.Fatalf("%s\n", err)
 	}
 }
+
+func TestFavorites_GetFavorites(t *testing.T) {
+	defer db.Close()
+
+	fs := &Favorites{
+		UserID: 1,
+		Words:  nil,
+	}
+
+	words, err := fs.GetFavorites()
+	if err != nil {
+		t.Fatalf("%s\n", err)
+	}
+
+	for _, w := range words {
+		fmt.Printf("%#v\n", *w)
+	}
+}

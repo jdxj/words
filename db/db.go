@@ -4,13 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/jdxj/words/config"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
 const (
-	// todo: 调试用, 路径应该是配置的
-	dsn = "/home/jdxj/workspace/words/db/words.db"
-
 	// Table Name
 	WordsTN     = "words"
 	UsersTN     = "users"
@@ -22,7 +21,7 @@ var (
 )
 
 func init() {
-	db, err := sql.Open("sqlite3", dsn)
+	db, err := sql.Open("sqlite3", config.GetDBPath())
 	if err != nil {
 		panic(err)
 	}

@@ -8,6 +8,7 @@ mode: debug
 port: 8081
 
 # logger
+log_path: /home/jdxj/workspace/words/words.log
 
-# database
-db_path: ./words.db
+# sqlite
+db_path: /home/jdxj/workspace/words/words.db

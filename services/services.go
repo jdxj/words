@@ -3,17 +3,27 @@ package services
 import (
 	"net/http"
 
+	"github.com/jdxj/words/config"
+	v1 "github.com/jdxj/words/services/api/v1"
+
 	"github.com/gin-gonic/gin"
 )
 
 func NewRouter() *gin.Engine {
+	mode := config.GetMode()
+	if mode == gin.ReleaseMode {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	r := gin.Default()
 	r.GET("", Home)
 
 	apiRG := r.Group("api")
-	apiRG.Use(CheckToken)
+	//apiRG.Use() todo: 权限等
+
+	v1RG := apiRG.Group("v1")
 	{
-		apiRG.GET("", APIHome)
+		v1RG.GET("favorites/:userID", v1.GetFavorites)
 	}
 
 	return r
@@ -24,22 +34,4 @@ func Home(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
-}
-
-// middleware
-
-// 检查是否登陆
-func CheckToken(c *gin.Context) {
-	token := c.GetHeader("token")
-	if token != "" {
-		return
-	}
-
-	c.AbortWithStatusJSON(http.StatusExpectationFailed, gin.H{
-		"message": "token not found",
-	})
-}
-
-func APIHome(c *gin.Context) {
-	Home(c)
 }
