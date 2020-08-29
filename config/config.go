@@ -20,6 +20,8 @@ const (
 	dbPathKey  = "db_path"
 	logPathKey = "log_path"
 	secretKey  = "secret"
+
+	translatorKey = "translator"
 )
 
 func init() {
@@ -58,4 +60,9 @@ func GetLogPath() string {
 func GetSecret() []byte {
 	viper.SetDefault(secretKey, "")
 	return []byte(viper.GetString(secretKey))
+}
+
+func GetTranslator() string {
+	viper.SetDefault(translatorKey, "google")
+	return viper.GetString(translatorKey)
 }

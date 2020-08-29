@@ -26,6 +26,9 @@ func NewRouter() *gin.Engine {
 	v1RG := apiRG.Group("v1")
 	{
 		v1RG.GET("favorites/:userID", v1.GetFavorites)
+
+		v1RG.GET("words/:word", v1.Search)
+		v1RG.GET("words/:word/voice", v1.Voice)
 	}
 
 	return r

@@ -6,10 +6,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/jdxj/words/models"
+	"github.com/jdxj/words/models/words"
 )
 
-func newTranslateResponse(response *http.Response) (*TranslateResponse, error) {
+func newResponse(response *http.Response) (*Response, error) {
 	var isGzip bool
 	ce := response.Header.Get("Content-Encoding")
 	if ce == "gzip" {
@@ -28,12 +28,12 @@ func newTranslateResponse(response *http.Response) (*TranslateResponse, error) {
 		reader = r
 	}
 
-	tr := &TranslateResponse{}
+	tr := &Response{}
 	decoder := json.NewDecoder(reader)
 	return tr, decoder.Decode(tr)
 }
 
-type TranslateResponse struct {
+type Response struct {
 	Sentences   []*Translation  `json:"sentences"`
 	Dict        []*Annotation   `json:"dict"`
 	Src         string          `json:"src"`
@@ -43,13 +43,14 @@ type TranslateResponse struct {
 	Definitions []*Definition   `json:"definitions"`
 }
 
-func (tr *TranslateResponse) ToWord() *models.Word {
-	w := &models.Word{}
+// todo: 如果单词拼写错误, 那么需要纠正
+func (tr *Response) ToWord() *words.Word {
+	w := &words.Word{}
 	if len(tr.Sentences) < 2 {
 		return w
 	}
 	t1 := tr.Sentences[0]
-	t2 := tr.Sentences[2]
+	t2 := tr.Sentences[1]
 
 	w.Word = t1.Orig
 	w.Phonetic = t2.TranslIt

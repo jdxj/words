@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"time"
+
+	"github.com/jdxj/words/models/words"
 )
 
 const (
@@ -40,13 +42,18 @@ type GoogleTranslate struct {
 }
 
 // Translate 翻译指定单词
-func (gt *GoogleTranslate) Translate(q string) (*TranslateResponse, error) {
+func (gt *GoogleTranslate) Translate(q string) (*words.Word, error) {
 	req := newTranslateRequest(q)
 	resp, err := gt.c.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	return newTranslateResponse(resp)
+
+	tr, err := newResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	return tr.ToWord(), nil
 }
 
 // Pronounce 获取指定单词发音

@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/jdxj/words/models/words"
+
 	"github.com/jdxj/words/db"
 )
 
@@ -20,10 +22,10 @@ func (f *Favorite) Insert() (sql.Result, error) {
 
 type Favorites struct {
 	UserID int
-	Words  []*Word
+	Words  []*words.Word
 }
 
-func (fs *Favorites) GetFavorites() ([]*Word, error) {
+func (fs *Favorites) GetFavorites() ([]*words.Word, error) {
 	if len(fs.Words) != 0 {
 		return fs.Words, nil
 	}
@@ -38,16 +40,16 @@ where f.user_id=?`, db.FavoritesTN, db.WordsTN)
 	}
 	defer rows.Close()
 
-	var words []*Word
+	var myWords []*words.Word
 	for rows.Next() {
-		w := &Word{}
+		w := &words.Word{}
 		err := rows.Scan(&w.ID, &w.Word, &w.Phonetic, &w.Meaning)
 		if err != nil {
 			return nil, err
 		}
-		words = append(words, w)
+		myWords = append(myWords, w)
 	}
 
-	fs.Words = words
+	fs.Words = myWords
 	return fs.Words, nil
 }

@@ -15,3 +15,7 @@ db_path: /home/jdxj/workspace/words/words.db
 
 # jwt
 secret: 123456
+
+# translator
+# 目前只有谷歌翻译可选
+translator: google
