@@ -12,3 +12,6 @@ log_path: /home/jdxj/workspace/words/words.log
 
 # sqlite
 db_path: /home/jdxj/workspace/words/words.db
+
+# jwt
+secret: 123456

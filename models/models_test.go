@@ -15,7 +15,7 @@ func TestWord_Insert(t *testing.T) {
 		Word:     "abc",
 		Phonetic: "abc",
 		Meaning:  "ABC",
-		Sound:    nil,
+		Voice:    nil,
 	}
 	if _, err := w.Insert(); err != nil {
 		t.Fatalf("%s\n", err)
@@ -30,6 +30,19 @@ func TestWord_Query(t *testing.T) {
 		t.Fatalf("%s\n", err)
 	}
 	fmt.Printf("%#v\n", *w)
+}
+
+func TestWord_QueryVoice(t *testing.T) {
+	defer db.Close()
+
+	w := &Word{ID: 1}
+	data, err := w.QueryVoice()
+	if err != nil {
+		t.Fatalf("%s\n", err)
+	}
+	fmt.Printf("%t\n", data == nil)
+	fmt.Printf("%x\n", data)
+	fmt.Printf("%s\n", data)
 }
 
 func TestUser_Insert(t *testing.T) {

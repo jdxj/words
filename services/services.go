@@ -17,9 +17,10 @@ func NewRouter() *gin.Engine {
 
 	r := gin.Default()
 	r.GET("", Home)
+	r.POST("sessions", PostSessions)
 
 	apiRG := r.Group("api")
-	//apiRG.Use() todo: 权限等
+	apiRG.Use(CheckToken)
 
 	v1RG := apiRG.Group("v1")
 	{
