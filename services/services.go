@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/jdxj/words/config"
@@ -35,4 +36,14 @@ func Home(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
+}
+
+func NewServer() *http.Server {
+	bind := fmt.Sprintf(":%s", config.GetPort())
+	router := NewRouter()
+	srv := &http.Server{
+		Addr:    bind,
+		Handler: router,
+	}
+	return srv
 }
