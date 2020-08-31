@@ -42,7 +42,7 @@ func TestWord_Query(t *testing.T) {
 func TestWord_QueryVoice(t *testing.T) {
 	defer db.Close()
 
-	w := &Word{ID: 3}
+	w := &Word{Word: "apple"}
 	data, err := w.QueryVoice()
 	if err != nil {
 		t.Fatalf("%s\n", err)
@@ -56,7 +56,7 @@ func TestWord_SaveVoice(t *testing.T) {
 	defer db.Close()
 
 	w := &Word{
-		Word:     "abc",
+		Word:     "56l",
 		Phonetic: "abc",
 		Meaning:  "abc",
 	}

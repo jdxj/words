@@ -17,7 +17,7 @@ type Word struct {
 
 func (w *Word) Insert() (sql.Result, error) {
 	query := fmt.Sprintf(`insert into %s (word,phonetic,meaning) values (?,?,?)`, db.WordsTN)
-	return db.Exec(query, w.Word, w.Phonetic, w.Meaning, w.Voice)
+	return db.Exec(query, w.Word, w.Phonetic, w.Meaning)
 }
 
 // Query 查询指定 word, 并将其它数据绑定到自身.
@@ -28,7 +28,7 @@ func (w *Word) Query() error {
 }
 
 func (w *Word) QueryVoice() ([]byte, error) {
-	query := fmt.Sprintf(`select voice from %s where word=? and voice!=null`, db.WordsTN)
+	query := fmt.Sprintf(`select voice from %s where word=? and voice is not null`, db.WordsTN)
 	var data []byte
 	row := db.QueryRow(query, w.Word)
 	return data, row.Scan(&data)
