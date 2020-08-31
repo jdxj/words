@@ -25,10 +25,18 @@ func NewRouter() *gin.Engine {
 
 	v1RG := apiRG.Group("v1")
 	{
+		// favorites
 		v1RG.GET("favorites/:userID", v1.GetFavorites)
+		v1RG.POST("favorites/:word")
+		v1RG.DELETE("favorites/:word")
 
-		v1RG.GET("words/:word", v1.Search)
-		v1RG.GET("words/:word/voice", v1.Voice)
+		// words
+		wordsRG := v1RG.Group("words")
+		wordsRG.Use(v1.CheckWordMW)
+		{
+			wordsRG.GET(":word", v1.Search)
+			wordsRG.GET(":word/voice", v1.Voice)
+		}
 	}
 
 	return r

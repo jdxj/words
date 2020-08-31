@@ -34,37 +34,42 @@ func newResponse(response *http.Response) (*Response, error) {
 }
 
 type Response struct {
-	Sentences   []*Translation  `json:"sentences"`
-	Dict        []*Annotation   `json:"dict"`
-	Src         string          `json:"src"`
-	Confidence  float64         `json:"confidence"`
-	Spell       json.RawMessage `json:"spell"`
-	LdResult    *LdResult       `json:"ld_result"`
-	Definitions []*Definition   `json:"definitions"`
+	Sentences   []*Translation `json:"sentences"`
+	Dict        []*Annotation  `json:"dict"`
+	Src         string         `json:"src"`
+	Confidence  float64        `json:"confidence"`
+	Spell       *Spell         `json:"spell"`
+	LdResult    *LdResult      `json:"ld_result"`
+	Definitions []*Definition  `json:"definitions"`
 }
 
-// todo: 如果单词拼写错误, 那么需要纠正
 func (tr *Response) ToWord() *words.Word {
 	w := &words.Word{}
 	if len(tr.Sentences) < 2 {
 		return w
 	}
-	t1 := tr.Sentences[0]
-	t2 := tr.Sentences[1]
+	t0 := tr.Sentences[0]
+	t1 := tr.Sentences[1]
 
-	w.Word = t1.Orig
-	w.Phonetic = t2.TranslIt
-	w.Meaning = t1.Trans
+	w.Word = t0.Orig
+	w.Phonetic = t1.SrcTranslIt
+	w.Meaning = t0.Trans
+
+	// 发现拼写错误
+	if tr.Spell.SpellRes != "" {
+		w.Word = tr.Spell.SpellRes
+		w.Wrong = t0.Orig
+	}
 	return w
 }
 
 type Translation struct {
-	// 1
+	// 0
 	Trans   string `json:"trans"`   // 中文
 	Orig    string `json:"orig"`    // 英文
 	Backend int    `json:"backend"` // 未知
 
-	// 2
+	// 1
 	TranslIt    string `json:"translit"`     // 拼音
 	SrcTranslIt string `json:"src_translit"` // 音标
 }
@@ -82,6 +87,13 @@ type Reverse struct {
 	Word               string   `json:"word"`
 	ReverseTranslation []string `json:"reverse_translation"`
 	Score              float64  `json:"score"`
+}
+
+type Spell struct {
+	SpellHtmlRes   string `json:"spell_html_res"`
+	SpellRes       string `json:"spell_res"`
+	CorrectionType []int  `json:"correction_type"`
+	Confident      bool   `json:"confident"`
 }
 
 type LdResult struct {

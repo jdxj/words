@@ -5,12 +5,11 @@ import (
 	"strings"
 
 	"github.com/jdxj/words/config"
-
-	"github.com/dgrijalva/jwt-go"
-
-	"github.com/gin-gonic/gin"
 	"github.com/jdxj/words/logger"
 	"github.com/jdxj/words/models"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 // PostSessions 表示创建/添加一个会话,
@@ -53,10 +52,10 @@ func CheckToken(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, resp)
 		return
 	}
-	tokenStr := extractToken(bearerToken)
+	tokenStr := ExtractToken(bearerToken)
 
 	uc := &models.UserClaims{}
-	token, err := jwt.ParseWithClaims(tokenStr, uc, keyFunc)
+	token, err := jwt.ParseWithClaims(tokenStr, uc, KeyFunc)
 	if err != nil {
 		logger.Error("jwt.ParseWithClaims: %s", err)
 		resp := models.NewResponse(123, "invalid token", nil)
@@ -68,11 +67,11 @@ func CheckToken(c *gin.Context) {
 	logger.Info("sign in, id: %d, name: %s", uc.ID, uc.Name)
 }
 
-func keyFunc(token *jwt.Token) (interface{}, error) {
+func KeyFunc(token *jwt.Token) (interface{}, error) {
 	return config.GetSecret(), nil
 }
 
-func extractToken(tok string) string {
+func ExtractToken(tok string) string {
 	if len(tok) > 6 && strings.ToUpper(tok[0:7]) == "BEARER " {
 		return tok[7:]
 	}

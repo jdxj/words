@@ -12,7 +12,18 @@ type Word struct {
 	Word     string `json:"word"`
 	Phonetic string `json:"phonetic"`
 	Meaning  string `json:"meaning"`
-	Voice    []byte `json:"voice"`
+	Voice    []byte `json:"voice,omitempty"`
+
+	Wrong string `json:"wrong,omitempty"`
+}
+
+// IsValid 检查当前 word 对象所持有的数据是否是有效的.
+// 一个有效的 word 数据的条件是指定的字段不为空.
+func (w *Word) IsValid() bool {
+	if w.Word == "" || w.Phonetic == "" || w.Meaning == "" {
+		return false
+	}
+	return true
 }
 
 func (w *Word) Insert() (sql.Result, error) {

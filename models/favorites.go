@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/jdxj/words/models/words"
-
 	"github.com/jdxj/words/db"
+	"github.com/jdxj/words/models/words"
 )
 
 type Favorite struct {
@@ -26,6 +25,7 @@ type Favorites struct {
 }
 
 func (fs *Favorites) GetFavorites() ([]*words.Word, error) {
+	// todo: 如何创建缓存?
 	if len(fs.Words) != 0 {
 		return fs.Words, nil
 	}

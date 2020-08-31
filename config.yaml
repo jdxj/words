@@ -1,7 +1,7 @@
-# 可选的模式, 参考 gin
-# debug
-# release
-# test
+# 可选的模式, 参考 gin:
+#   debug
+#   release
+#   test
 mode: debug
 
 # web
@@ -10,8 +10,19 @@ port: 8081
 # logger
 log_path: /home/jdxj/workspace/words/words.log
 
+# database
+# 可选值:
+#   mysql
+#   sqlite
+database: mysql
 # sqlite
-db_path: /home/jdxj/workspace/words/words.db
+sqlite: /home/jdxj/workspace/words/words.db
+# mysql
+mysql:
+  user: root
+  pass: 123456
+  addr: 127.0.0.1:3306
+  base: words
 
 # jwt
 secret: 123456

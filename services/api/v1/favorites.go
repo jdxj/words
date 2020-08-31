@@ -52,3 +52,11 @@ func GetFavorites(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
+
+func PostFavorites(c *gin.Context) {
+
+}
+
+func DeleteFavorites(c *gin.Context) {
+
+}

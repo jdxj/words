@@ -9,7 +9,7 @@ import (
 func TestGoogleTranslate_Translate(t *testing.T) {
 	gt := NewGoogleTranslate()
 	// 查询空字符串会怎样. 经测试返回空数据
-	word, err := gt.Translate("")
+	word, err := gt.Translate("appla")
 	if err != nil {
 		t.Fatalf("%s\n", err)
 	}

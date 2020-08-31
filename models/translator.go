@@ -3,10 +3,9 @@ package models
 import (
 	"sync"
 
-	"github.com/jdxj/words/models/words"
-
 	"github.com/jdxj/words/config"
 	"github.com/jdxj/words/models/google"
+	"github.com/jdxj/words/models/words"
 )
 
 const (
