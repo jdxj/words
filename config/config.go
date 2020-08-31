@@ -14,16 +14,6 @@ const (
 	configPathDebug = "/home/jdxj/workspace/words"
 )
 
-const (
-	portKey    = "port"
-	modeKey    = "mode"
-	dbPathKey  = "db_path"
-	logPathKey = "log_path"
-	secretKey  = "secret"
-
-	translatorKey = "translator"
-)
-
 func init() {
 	viper.SetConfigName(configName)
 	viper.SetConfigType(configType)
@@ -37,32 +27,55 @@ func init() {
 }
 
 func GetPort() string {
-	port := "8080"
-	viper.SetDefault(portKey, port)
-	return viper.GetString(portKey)
+	key, port := "port", "8080"
+	viper.SetDefault(key, port)
+	return viper.GetString(key)
 }
 
 func GetMode() string {
-	viper.SetDefault(modeKey, gin.DebugMode)
-	return viper.GetString(modeKey)
+	key, mode := "mode", gin.DebugMode
+	viper.SetDefault(key, mode)
+	return viper.GetString(key)
 }
 
-func GetDBPath() string {
-	viper.SetDefault(dbPathKey, "words.db")
-	return viper.GetString(dbPathKey)
+func GetSQLite() string {
+	key, val := "sqlite", "words.db"
+	viper.SetDefault(key, val)
+	return viper.GetString(key)
 }
 
 func GetLogPath() string {
-	viper.SetDefault(logPathKey, "words.log")
-	return viper.GetString(logPathKey)
+	key, path := "log_path", "words.log"
+	viper.SetDefault(key, path)
+	return viper.GetString(key)
 }
 
 func GetSecret() []byte {
-	viper.SetDefault(secretKey, "")
-	return []byte(viper.GetString(secretKey))
+	key := "secret"
+	return []byte(viper.GetString(key))
 }
 
 func GetTranslator() string {
-	viper.SetDefault(translatorKey, "google")
-	return viper.GetString(translatorKey)
+	key, val := "translator", "google"
+	viper.SetDefault(key, val)
+	return viper.GetString(key)
+}
+
+func GetDatabase() string {
+	key, val := "database", "mysql"
+	viper.SetDefault(key, val)
+	return viper.GetString(key)
+}
+
+type MySQL struct {
+	User string
+	Pass string
+	Addr string
+	Base string
+}
+
+func GetMySQL() (mysql MySQL) {
+	key := "mysql"
+	_ = viper.UnmarshalKey(key, &mysql)
+	return
 }

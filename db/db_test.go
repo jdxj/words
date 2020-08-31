@@ -1,20 +1,25 @@
 package db
 
 import (
+	"fmt"
 	"testing"
+
+	"github.com/jdxj/words/config"
 )
 
 func TestClose(t *testing.T) {
-	if err := sqlite3.Ping(); err != nil {
+	if err := database.Ping(); err != nil {
 		t.Fatalf("%s\n", err)
 	}
-	sqlite3.Close()
+	database.Close()
 }
 
-func TestCreateWordsTable(t *testing.T) {
-	defer sqlite3.Close()
+func TestOpenMySQL(t *testing.T) {
+	kind := config.GetDatabase()
+	fmt.Printf("%s\n", kind)
 
-	if err := CreateWordsTable(); err != nil {
+	if err := database.Ping(); err != nil {
 		t.Fatalf("%s\n", err)
 	}
+	database.Close()
 }
